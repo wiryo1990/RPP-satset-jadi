@@ -1,750 +1,264 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" translate="no">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>RPP Pintar Deep Learning - Generator RPP / Modul Ajar</title>
-    <!-- Tailwind CSS untuk Styling Modern -->
+    <title>RPP SATSET JADI - Pembuat RPP Kurikulum Merdeka</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- FontAwesome untuk Ikon -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Pengaturan Font Utama sesuai Permintaan */
-        body {
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 12pt;
-            background-color: #f1f5f9;
-        }
-
-        /* Simulasi Tampilan Kertas A4 */
-        .a4-page {
-            width: 210mm;
-            min-height: 297mm;
-            padding: 20mm;
-            margin: 10px auto;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-            font-family: 'Times New Roman', Times, serif;
-            font-size: 12pt;
-            line-height: 1.15;
-            color: #1e293b;
-            box-sizing: border-box;
-        }
-
-        /* Style untuk Judul & Subjudul dalam Dokumen */
-        .doc-title {
-            font-size: 16pt;
-            font-weight: bold;
-            color: #1e3a8a; /* Biru Tua */
-            text-align: center;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #1e3a8a;
-            padding-bottom: 5px;
-        }
-
-        .doc-subtitle {
-            font-size: 13pt;
-            font-weight: bold;
-            color: #1d4ed8; /* Biru */
-            margin-top: 18px;
-            margin-bottom: 8px;
-            border-left: 4px solid #1d4ed8;
-            padding-left: 8px;
-            background-color: #eff6ff;
-            padding-top: 2px;
-            padding-bottom: 2px;
-        }
-
-        .doc-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 12px;
-            font-size: 12pt;
-        }
-
-        .doc-table th, .doc-table td {
-            border: 1px solid #64748b;
-            padding: 6px 8px;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        .doc-table th {
-            background-color: #f1f5f9;
-            font-weight: bold;
-            color: #0f172a;
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f5f9;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #94a3b8;
-            border-radius: 4px;
-        }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
+        .rpp-preview { font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: black; line-height: 1.5; background: white; padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 210mm; min-height: 297mm; margin: 0 auto; }
+        .rpp-preview h1 { text-align: center; font-size: 14pt; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; border-bottom: 2px solid black; padding-bottom: 10px; }
+        .rpp-preview h2 { font-size: 12pt; font-weight: bold; margin-top: 15px; margin-bottom: 10px; color: #1e3a8a; }
+        
+        /* Tabel Informasi Umum Khusus Web (Tanpa Garis) */
+        .info-table { width: 100%; border-collapse: collapse; margin-bottom: 15px; }
+        .info-table td { padding: 2px 0; vertical-align: top; }
+        .col-label { width: 30%; }
+        .col-colon { width: 5%; text-align: center; }
+        .col-content { width: 65%; }
+        
+        /* Loading Spinner */
+        .loader { border: 4px solid #f3f3f3; border-top: 4px solid #3498db; border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; display: inline-block; vertical-align: middle; margin-right: 8px; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     </style>
 </head>
-<body class="bg-slate-100 text-slate-800 font-serif">
+<body class="p-4 md:p-8">
 
-    <!-- Header / Navbar -->
-    <header class="bg-indigo-900 text-white py-6 px-4 shadow-md border-b-4 border-indigo-500">
-        <div class="max-w-7xl mx-auto text-center">
-            <h1 class="text-3xl font-bold tracking-wide font-sans flex items-center justify-center gap-3">
-                <i class="fa-solid fa-graduation-cap text-yellow-400"></i>
-                RPP SATSET JADI
-            </h1>
-            <p class="text-indigo-200 mt-2 text-sm font-sans">
-                Aplikasi pembuat RPP Kurikulum merdeka Berbasis Deep Learning
-            </p>
-            <p class="text-sm mt-3 font-sans pt-2 border-t border-indigo-800/80 inline-block px-6">
-                Aplikasi ini dikembangkan oleh: <strong class="font-bold text-yellow-300">Wiryo, S.Pd</strong>
-            </p>
-        </div>
-    </header>
-
-    <!-- Main Container -->
-    <main class="max-w-7xl mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
-
-        <!-- Form Panel (Sisi Kiri) -->
-        <section class="lg:col-span-5 bg-white p-6 rounded-xl shadow-md border border-slate-200 font-sans h-fit">
-            <div class="flex items-center gap-2 mb-4 pb-2 border-b border-slate-200">
-                <i class="fa-solid fa-pen-to-square text-indigo-600 text-xl"></i>
-                <h2 class="text-lg font-bold text-slate-800">Form Parameter RPP</h2>
-            </div>
-
-            <form id="rppForm" onsubmit="generateRPP(event)" class="space-y-4 text-sm">
+    <div class="max-w-7xl mx-auto bg-white rounded-lg shadow-lg flex flex-col md:flex-row">
+        
+        <!-- KOLOM KIRI: FORM INPUT -->
+        <div class="w-full md:w-1/3 bg-blue-50 p-6 border-b md:border-b-0 md:border-r">
+            <h2 class="text-xl font-bold text-blue-800 mb-2">RPP SATSET JADI</h2>
+            <p class="text-sm text-gray-600 mb-6">Aplikasi pembuat RPP Kurikulum Merdeka berbasis Deep Learning</p>
+            
+            <form id="rppForm" class="space-y-4 text-sm">
+                <div>
+                    <label class="block font-semibold mb-1">Nama Penyusun</label>
+                    <input type="text" id="namaPenyusun" class="w-full border p-2 rounded" placeholder="Contoh: Wiryo, S.Pd">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Satuan Pendidikan</label>
+                    <input type="text" id="sekolah" class="w-full border p-2 rounded" placeholder="Contoh: SD Negeri Teluk Santong">
+                </div>
+                <div class="flex gap-2">
+                    <div class="w-1/2">
+                        <label class="block font-semibold mb-1">Fase / Kelas</label>
+                        <input type="text" id="faseKelas" class="w-full border p-2 rounded" placeholder="Contoh: Fase A / Kelas 1">
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block font-semibold mb-1">Mata Pelajaran</label>
+                        <input type="text" id="mapel" class="w-full border p-2 rounded" placeholder="Contoh: Bahasa Indonesia">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Materi Pelajaran</label>
+                    <input type="text" id="materi" class="w-full border p-2 rounded" placeholder="Contoh: Mengenal Perasaan">
+                </div>
+                <div class="flex gap-2">
+                    <div class="w-1/2">
+                        <label class="block font-semibold mb-1">Semester</label>
+                        <input type="text" id="semester" class="w-full border p-2 rounded" placeholder="Contoh: 1 (Ganjil)">
+                    </div>
+                    <div class="w-1/2">
+                        <label class="block font-semibold mb-1">Tahun Pelajaran</label>
+                        <input type="text" id="tahunPelajaran" class="w-full border p-2 rounded" placeholder="Contoh: 2026 / 2027">
+                    </div>
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Alokasi Waktu</label>
+                    <input type="text" id="alokasi" class="w-full border p-2 rounded" placeholder="Contoh: 3 x 35 menit (1 pertemuan)">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Dimensi Profil Lulusan</label>
+                    <input type="text" id="profil" class="w-full border p-2 rounded" placeholder="Contoh: Beriman, Bertakwa, Bernalar Kritis">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Mitra Pembelajaran</label>
+                    <input type="text" id="mitra" class="w-full border p-2 rounded" placeholder="Contoh: Orang Tua & Lingkungan Sekitar">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Pemanfaatan Digital</label>
+                    <input type="text" id="digital" class="w-full border p-2 rounded" placeholder="Contoh: Video Edukasi YouTube">
+                </div>
+                <div>
+                    <label class="block font-semibold mb-1">Tujuan Pembelajaran</label>
+                    <textarea id="tujuan" class="w-full border p-2 rounded h-20" placeholder="Contoh: Peserta didik mampu menceritakan pengalaman pribadi..."></textarea>
+                </div>
+                <div class="border-t border-gray-300 pt-4 mt-4">
+                    <p class="font-bold text-gray-700 mb-2">Data Pengesahan</p>
+                    <div class="flex gap-2">
+                        <div class="w-1/2">
+                            <label class="block font-semibold mb-1">Tempat</label>
+                            <input type="text" id="tempat" class="w-full border p-2 rounded" placeholder="Contoh: Teluk Santong">
+                        </div>
+                        <div class="w-1/2">
+                            <label class="block font-semibold mb-1">Tanggal</label>
+                            <input type="text" id="tanggal" class="w-full border p-2 rounded" placeholder="Contoh: 20 Juli 2026">
+                        </div>
+                    </div>
+                </div>
                 
-                <!-- Jenjang, Fase, Kelas -->
-                <div class="grid grid-cols-3 gap-2">
-                    <div>
-                        <label class="block font-semibold mb-1">Jenjang</label>
-                        <select id="jenjang" onchange="updateFaseKelas()" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                            <option value="SD">SD</option>
-                            <option value="SMP">SMP</option>
-                            <option value="SMA">SMA</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold mb-1">Fase</label>
-                        <select id="fase" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                            <!-- Populated dynamically -->
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block font-semibold mb-1">Kelas</label>
-                        <select id="kelas" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                            <!-- Populated dynamically -->
-                        </select>
-                    </div>
-                </div>
-
-                <!-- Informasi Umum -->
-                <div class="space-y-3 pt-2 border-t border-slate-200">
-                    <div>
-                        <label class="block font-semibold mb-1">Nama Penyusun</label>
-                        <input type="text" id="namaPenyusun" placeholder="Contoh: Wiryo, S.Pd" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block font-semibold mb-1">Sekolah</label>
-                        <input type="text" id="sekolah" placeholder="Contoh: SD Negeri Teluk Santong" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block font-semibold mb-1">Mata Pelajaran</label>
-                            <input type="text" id="mapel" placeholder="Contoh: Bahasa Indonesia" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block font-semibold mb-1">Semester</label>
-                            <select id="semester" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                                <option value="1 (Ganjil)">1 (Ganjil)</option>
-                                <option value="2 (Genap)">2 (Genap)</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block font-semibold mb-1">Tahun Pelajaran</label>
-                            <input type="text" id="tahunPelajaran" placeholder="Contoh: 2026 / 2027" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                        <div>
-                            <label class="block font-semibold mb-1">Alokasi Waktu</label>
-                            <input type="text" id="alokasiWaktu" placeholder="Contoh: 3 x 35 menit ( 1 pertemuan )" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Materi & Tujuan Pembelajaran -->
-                <div class="space-y-3 pt-2 border-t border-slate-200">
-                    <div>
-                        <label class="block font-semibold mb-1">Materi Pelajaran</label>
-                        <input type="text" id="materi" placeholder="Contoh: Mengenal Perasaan" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block font-semibold mb-1">Tujuan Pembelajaran</label>
-                        <textarea id="tujuan" rows="3" placeholder="Contoh: Peserta didik mampu menceritakan pengalaman pribadi tentang berbagai jenis perasaan dengan suara dan intonasi yang jelas" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500"></textarea>
-                    </div>
-                </div>
-
-                <!-- Profil Lulusan / Karakter -->
-                <div class="pt-2 border-t border-slate-200">
-                    <label class="block font-semibold mb-2">Dimensi Profil Lulusan (Pilih yang Relevan)</label>
-                    <div class="grid grid-cols-2 gap-1.5 text-xs">
-                        <label class="flex items-center gap-1.5"><input type="checkbox" name="profil" value="Beriman, Bertakwa & Berakhlak Mulia" checked> Beriman & Bertakwa</label>
-                        <label class="flex items-center gap-1.5"><input type="checkbox" name="profil" value="Berkebinekaan Global"> Berkebinekaan Global</label>
-                        <label class="flex items-center gap-1.5"><input type="checkbox" name="profil" value="Bergotong Royong" checked> Bergotong Royong</label>
-                        <label class="flex items-center gap-1.5"><input type="checkbox" name="profil" value="Mandiri"> Mandiri</label>
-                        <label class="flex items-center gap-1.5"><input type="checkbox" name="profil" value="Bernalar Kritis" checked> Bernalar Kritis</label>
-                        <label class="flex items-center gap-1.5"><input type="checkbox" name="profil" value="Kreatif" checked> Kreatif</label>
-                        <label class="flex items-center gap-1.5"><input type="checkbox" name="profil" value="Komunikatif"> Komunikatif</label>
-                        <label class="flex items-center gap-1.5"><input type="checkbox" name="profil" value="Kolaboratif"> Kolaboratif</label>
-                    </div>
-                </div>
-
-                <!-- Mitra & Digital -->
-                <div class="space-y-3 pt-2 border-t border-slate-200">
-                    <div>
-                        <label class="block font-semibold mb-1">Mitra Pembelajaran</label>
-                        <input type="text" id="mitra" placeholder="Contoh: Orang Tua, Komunitas Pegiat Lingkungan Local" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                    <div>
-                        <label class="block font-semibold mb-1">Pemanfaatan Digital</label>
-                        <input type="text" id="digital" placeholder="Contoh: Video Animasi YouTube, Quizizz, Slide Canva" class="w-full p-2 border rounded focus:ring-2 focus:ring-indigo-500">
-                    </div>
-                </div>
-
-                <!-- Data Pengesahan -->
-                <div class="p-3 bg-indigo-50 rounded-lg border border-indigo-200 space-y-2">
-                    <h3 class="font-bold text-indigo-900 tracking-wide flex items-center gap-1">
-                        <i class="fa-solid fa-file-signature"></i> DATA PENGESAHAN
-                    </h3>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-xs font-semibold mb-0.5">NIP Guru Penyusun</label>
-                            <input type="text" id="nipGuru" placeholder="Contoh: 19900809 202221 1 003" class="w-full p-1.5 border rounded text-xs">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold mb-0.5">Nama Kepala Sekolah</label>
-                            <input type="text" id="namaKepala" placeholder="Contoh: Fadli Rohul Ihsan, S.Pd" class="w-full p-1.5 border rounded text-xs">
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="block text-xs font-semibold mb-0.5">NIP Kepala Sekolah</label>
-                            <input type="text" id="nipKepala" placeholder="Contoh: 19840121 200902 1 007" class="w-full p-1.5 border rounded text-xs">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold mb-0.5">Tempat & Tanggal</label>
-                            <input type="text" id="tempatTanggal" placeholder="Contoh: Teluk Santong, 20 Juli 2026" class="w-full p-1.5 border rounded text-xs">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Tombol Buat -->
-                <button type="submit" id="btnGenerate" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-lg transition duration-200 shadow-md flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                    <span>Buat RPP</span>
+                <button type="submit" id="btnSubmit" class="w-full bg-blue-600 text-white font-bold py-3 rounded hover:bg-blue-700 transition duration-200 mt-4">
+                    <span id="btnText">Buat RPP Sekarang</span>
                 </button>
             </form>
-        </section>
+        </div>
 
-        <!-- Preview & Output Panel (Sisi Kanan) -->
-        <section class="lg:col-span-7 flex flex-col items-center">
-            
-            <!-- Floating Bar Aksi -->
-            <div class="w-full bg-white p-3 rounded-xl shadow-md border border-slate-200 mb-4 flex items-center justify-between font-sans">
-                <div class="flex items-center gap-2">
-                    <span class="inline-block w-3 h-3 rounded-full bg-emerald-500"></span>
-                    <span class="text-sm font-semibold text-slate-700">Pratinjau Hasil RPP (Ukuran A4)</span>
-                </div>
-                <button onclick="downloadWord()" id="btnDownload" disabled class="bg-emerald-600 hover:bg-emerald-700 text-white text-sm font-bold py-2 px-4 rounded-lg opacity-50 cursor-not-allowed transition flex items-center gap-2">
-                    <i class="fa-solid fa-file-word"></i>
-                    <span>Download MS Word (.docx)</span>
+        <!-- KOLOM KANAN: PREVIEW & DOWNLOAD -->
+        <div class="w-full md:w-2/3 p-6 bg-gray-200 flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-lg text-gray-700">Pratinjau Hasil RPP (Ukuran A4)</h3>
+                <button id="btnDownload" onclick="downloadWord()" class="bg-green-600 text-white px-4 py-2 rounded font-bold hover:bg-green-700 hidden">
+                    Download MS Word (.docx)
                 </button>
             </div>
-
-            <!-- Loading Spinner -->
-            <div id="loadingState" class="hidden my-12 text-center font-sans">
-                <div class="inline-block animate-spin rounded-full h-12 w-12 border-4 border-indigo-600 border-t-transparent"></div>
-                <p class="mt-3 text-slate-600 font-semibold">Sedang menyusun RPP Deep Learning yang realistis...</p>
-                <p class="text-xs text-slate-400">Menyusun pertanyaan pemantik, langkah pembelajaran, rubrik & LKPD...</p>
-            </div>
-
-            <!-- Container Kertas A4 Pratinjau -->
-            <div class="w-full overflow-x-auto flex justify-center pb-12">
-                <div id="a4Content" class="a4-page">
-                    
-                    <div class="text-center py-20 text-slate-400 font-sans">
-                        <i class="fa-solid fa-file-circle-plus text-6xl mb-4 text-slate-300"></i>
-                        <h3 class="text-lg font-bold text-slate-600">RPP Belum Dibuat</h3>
-                        <p class="text-sm">Silakan lengkapi data di form sebelah kiri dan klik tombol <strong>"Buat RPP Deep Learning"</strong>.</p>
-                    </div>
-
+            
+            <div class="overflow-x-auto bg-gray-300 p-4 rounded border">
+                <div id="previewArea" class="rpp-preview">
+                    <p class="text-center text-gray-400 mt-20">Isi form di sebelah kiri dan klik "Buat RPP Sekarang" untuk menampilkan hasil di sini.</p>
                 </div>
             </div>
+        </div>
+    </div>
 
-        </section>
-
-    </main>
-
-    <!-- Logic JavaScript -->
     <script>
-        // Data Referensi Fase & Kelas sesuai Jenjang
-        const dataJenjang = {
-            SD: {
-                fase: ['Fase A', 'Fase B', 'Fase C'],
-                kelas: ['Kelas 1', 'Kelas 2', 'Kelas 3', 'Kelas 4', 'Kelas 5', 'Kelas 6']
-            },
-            SMP: {
-                fase: ['Fase D'],
-                kelas: ['Kelas 7', 'Kelas 8', 'Kelas 9']
-            },
-            SMA: {
-                fase: ['Fase E', 'Fase F'],
-                kelas: ['Kelas 10', 'Kelas 11', 'Kelas 12']
-            }
-        };
-
-        // Fungsi Update Option Dropdown Fase & Kelas
-        function updateFaseKelas() {
-            const jenjang = document.getElementById('jenjang').value;
-            const faseSelect = document.getElementById('fase');
-            const kelasSelect = document.getElementById('kelas');
-
-            faseSelect.innerHTML = '';
-            kelasSelect.innerHTML = '';
-
-            dataJenjang[jenjang].fase.forEach(f => {
-                faseSelect.innerHTML += `<option value="${f}">${f}</option>`;
-            });
-
-            dataJenjang[jenjang].kelas.forEach(k => {
-                kelasSelect.innerHTML += `<option value="${k}">${k}</option>`;
-            });
-        }
-
-        // Initialize Option saat pertama dimuat
-        window.onload = function() {
-            updateFaseKelas();
-        };
-
-        // Fungsi Utama Membuat RPP dengan Gemini API
-        async function generateRPP(event) {
-            event.preventDefault();
-
-            const btnGenerate = document.getElementById('btnGenerate');
-            const loadingState = document.getElementById('loadingState');
-            const a4Content = document.getElementById('a4Content');
+        document.getElementById('rppForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btnSubmit = document.getElementById('btnSubmit');
+            const btnText = document.getElementById('btnText');
+            const previewArea = document.getElementById('previewArea');
             const btnDownload = document.getElementById('btnDownload');
+            
+            btnSubmit.disabled = true;
+            btnSubmit.classList.add('opacity-75');
+            btnText.innerHTML = '<span class="loader"></span> Memproses RPP dengan AI...';
+            
+            // Pengambilan data dengan Fallback jika form tidak diisi
+            const dataForm = {
+                namaPenyusun: document.getElementById('namaPenyusun').value.trim() || "Wiryo, S.Pd",
+                sekolah: document.getElementById('sekolah').value.trim() || "SD Negeri Teluk Santong",
+                faseKelas: document.getElementById('faseKelas').value.trim() || "Fase A / Kelas 1",
+                mapel: document.getElementById('mapel').value.trim() || "Bahasa Indonesia",
+                materi: document.getElementById('materi').value.trim() || "Mengenal Perasaan",
+                semester: document.getElementById('semester').value.trim() || "1 (Ganjil)",
+                tahunPelajaran: document.getElementById('tahunPelajaran').value.trim() || "2026 / 2027",
+                alokasi: document.getElementById('alokasi').value.trim() || "3 x 35 menit (1 pertemuan)",
+                profil: document.getElementById('profil').value.trim() || "Beriman, Bertakwa & Berakhlak Mulia, Bergotong Royong, Bernalar Kritis, Kreatif",
+                mitra: document.getElementById('mitra').value.trim() || "Orang Tua / Wali Murid & Lingkungan Sekitar",
+                digital: document.getElementById('digital').value.trim() || "Video Edukasi YouTube & Platform Media Interaktif",
+                tujuan: document.getElementById('tujuan').value.trim() || "Peserta didik mampu menceritakan pengalaman pribadi tentang berbagai jenis perasaan dengan suara dan intonasi yang jelas",
+                tempat: document.getElementById('tempat').value.trim() || "Teluk Santong",
+                tanggal: document.getElementById('tanggal').value.trim() || "20 Juli 2026"
+            };
 
-            // Tangkap Nilai Form atau Gunakan Placeholder / Fallback Default
-            const jenjang = document.getElementById('jenjang').value;
-            const fase = document.getElementById('fase').value;
-            const kelas = document.getElementById('kelas').value;
-
-            const namaPenyusun = document.getElementById('namaPenyusun').value.trim() || "Wiryo, S.Pd";
-            const sekolah = document.getElementById('sekolah').value.trim() || "SD Negeri Teluk Santong";
-            const mapel = document.getElementById('mapel').value.trim() || "Bahasa Indonesia";
-            const semester = document.getElementById('semester').value;
-            const tahunPelajaran = document.getElementById('tahunPelajaran').value.trim() || "2026 / 2027";
-            const alokasiWaktu = document.getElementById('alokasiWaktu').value.trim() || "3 x 35 menit ( 1 pertemuan )";
-
-            const materi = document.getElementById('materi').value.trim() || "Mengenal Perasaan";
-            const tujuan = document.getElementById('tujuan').value.trim() || "Peserta didik mampu menceritakan pengalaman pribadi tentang berbagai jenis perasaan dengan suara dan intonasi yang jelas";
-
-            // Profil Lulusan
-            const checkboxes = document.querySelectorAll('input[name="profil"]:checked');
-            let profilList = Array.from(checkboxes).map(cb => cb.value);
-            if(profilList.length === 0) profilList = ["Bernalar Kritis", "Bergotong Royong", "Kreatif"];
-
-            const mitra = document.getElementById('mitra').value.trim() || "Orang Tua / Wali Murid & Lingkungan Sekitar";
-            const digital = document.getElementById('digital').value.trim() || "Video Edukasi YouTube & Platform Media Interaktif";
-
-            // Data Pengesahan
-            const nipGuru = document.getElementById('nipGuru').value.trim() || "19900809 202221 1 003";
-            const namaKepala = document.getElementById('namaKepala').value.trim() || "Fadli Rohul Ihsan, S.Pd";
-            const nipKepala = document.getElementById('nipKepala').value.trim() || "19840121 200902 1 007";
-            const tempatTanggal = document.getElementById('tempatTanggal').value.trim() || "Teluk Santong, 20 Juli 2026";
-
-            // UI Loading State
-            btnGenerate.disabled = true;
-            btnGenerate.classList.add('opacity-50');
-            loadingState.classList.remove('hidden');
-            a4Content.innerHTML = '';
-
-            // Construct Prompt untuk Gemini AI
-            const systemPrompt = `Anda adalah seorang pakar pengembang kurikulum Kurikulum Merdeka di Indonesia dengan spesialisasi pendekatan Deep Learning (Mindful, Meaningful, dan Joyful Learning). Buatlah konten RPP / Modul Ajar yang sangat realistis, tidak mengada-ada, logis, serta dapat diterapkan secara nyata di kelas. Response HARUS dalam format JSON murni.`;
-
-            const userPrompt = `
-Buatkan isi bagian terstruktur RPP Deep Learning untuk data berikut:
-- Jenjang: ${jenjang} (${fase}, ${kelas})
-- Mata Pelajaran: ${mapel}
-- Materi: ${materi}
-- Tujuan Pembelajaran: ${tujuan}
-- Mitra Pembelajaran: ${mitra}
-- Pemanfaatan Digital: ${digital}
-
-PENTING UNTUK LANGKAH PEMBELAJARAN:
-Di dalam skenario Langkah Pembelajaran, kamu WAJIB menyertakan dan mempraktikkan Pemanfaatan Digital ("${digital}") dan pelibatan Mitra Pembelajaran ("${mitra}") secara spesifik, realistis, dan terintegrasi dalam aktivitas guru/siswa.
-
-Hasilkan output JSON dengan struktur berikut:
-{
-  "pemahamanBermakna": "Penjelasan rinci mengapa materi ini bermakna untuk kehidupan peserta didik sehari-hari",
-  "pertanyaanPemantik": [
-    "Pertanyaan 1 yang memicu rasa ingin tahu mendalam",
-    "Pertanyaan 2 yang kontekstual"
-  ],
-  "langkahPembelajaran": {
-    "pendahuluan": [
-      "Aktivitas awal (Mindful): Mengondisikan suasana tenang, refleksi, kesiapan belajar (10 menit)"
-    ],
-    "kegiatanInti": [
-      "Aktivitas 1 (Meaningful Learning): Eksplorasi konsep dan keterkaitan dengan kehidupan nyata",
-      "Aktivitas 2 (Deep Inquiry): Diskusi mendalam dan kolaborasi memecahkan masalah",
-      "Aktivitas 3 (Joyful Learning): Aplikasi kreatif/presentasi/permainan edukatif yang menyenangkan"
-    ],
-    "penutup": [
-      "Refleksi pembelajaran, umpan balik, dan penguatan (10 menit)"
-    ]
-  },
-  "rubrikPenilaian": [
-    {
-      "aspek": "Sikap / Profil Pelajar",
-      "kriteriaSangatBaik": "Deskripsi rinci",
-      "kriteriaBaik": "Deskripsi rinci",
-      "kriteriaPerluBimbingan": "Deskripsi rinci"
-    },
-    {
-      "aspek": "Pemahaman Konsep (Pengetahuan)",
-      "kriteriaSangatBaik": "Deskripsi rinci",
-      "kriteriaBaik": "Deskripsi rinci",
-      "kriteriaPerluBimbingan": "Deskripsi rinci"
-    }
-  ],
-  "lkpd": {
-    "judul": "Judul Lembar Kerja yang Menarik",
-    "instruksi": "Petunjuk pengerjaan yang jelas untuk siswa",
-    "tugas": [
-      "Soal/Tugas 1 (Analisis/Eksplorasi)",
-      "Soal/Tugas 2 (Aplikasi Reflektif)"
-    ]
-  }
-}
-`;
+            const systemPrompt = "Anda adalah ahli pembuat Modul Ajar/RPP Kurikulum Merdeka berprinsip Deep Learning. Berikan output langsung berupa format HTML (gunakan tag <p>, <ul>, <ol>, <strong> tanpa membungkusnya dengan tag ```html) KHUSUS untuk bagian II. KOMPONEN INTI (Pemahaman Bermakna, Pertanyaan Pemantik, Kegiatan Pembelajaran Pendahuluan/Inti/Penutup, dan Asesmen).";
+            const userPrompt = `Buatkan konten Komponen Inti RPP untuk Mata Pelajaran: ${dataForm.mapel}, Materi: ${dataForm.materi}, Tujuan: ${dataForm.tujuan}, Alokasi Waktu: ${dataForm.alokasi}. Tulis secara rinci dan terstruktur.`;
 
             try {
-// Call Gemini API via Fetch
-const apiKey = "AQ.Ab8RN6LWI_ujD243IlvQVa47evbDC8WNb5cWu3hDJDkJkyxW7axRw"; 
-const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
+                // API Key Bapak terpasang langsung dengan endpoint model stabil (gemini-1.5-flash)
+                const apiKey = "AQ.Ab8RN6LWI_ujD243IlvQVa47evbDC8WNb5cWu3hDJDkJkyxW7axRw";
+                const apiUrl = "[https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=](https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=)" + apiKey;
 
                 const payload = {
                     contents: [{ parts: [{ text: userPrompt }] }],
-                    systemInstruction: { parts: [{ text: systemPrompt }] },
-                    generationConfig: {
-                        responseMimeType: "application/json"
-                    }
+                    systemInstruction: { parts: [{ text: systemPrompt }] }
                 };
 
-                // Exponential Backoff Fetch
-                let response, attempts = 0;
-                while (attempts < 3) {
-                    try {
-                        response = await fetch(apiUrl, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(payload)
-                        });
-                        if (response.ok) break;
-                    } catch (e) {
-                        attempts++;
-                        await new Promise(r => setTimeout(r, Math.pow(2, attempts) * 1000));
-                    }
-                    attempts++;
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error("Gagal merespons dari server. Status: " + response.status);
                 }
 
                 const result = await response.json();
-                
-                // Mencegah Error: Bersihkan teks jika AI menyelipkan tag markdown ```json
-                let rawText = result.candidates[0].content.parts[0].text;
-                rawText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
-                
-                const aiData = JSON.parse(rawText);
+                let kontenInti = result.candidates[0].content.parts[0].text;
+                kontenInti = kontenInti.replace(/```html/g, '').replace(/```/g, '').trim();
 
-                // Format RPP ke dalam HTML siap cetak A4
-                renderRPPContent({
-                    jenjang, fase, kelas, namaPenyusun, sekolah, mapel, semester, tahunPelajaran, alokasiWaktu,
-                    materi, tujuan, profilList, mitra, digital, nipGuru, namaKepala, nipKepala, tempatTanggal,
-                    aiData
-                });
-
-                // Enable Tombol Download
-                btnDownload.disabled = false;
-                btnDownload.classList.remove('opacity-50', 'cursor-not-allowed');
+                renderRPP(dataForm, kontenInti);
+                btnDownload.classList.remove('hidden');
 
             } catch (error) {
-                console.error(error);
-                a4Content.innerHTML = `
-                    <div class="p-6 text-red-600 font-sans text-center">
-                        <i class="fa-solid fa-circle-exclamation text-4xl mb-2"></i>
-                        <p class="font-bold">Terjadi kesalahan saat memproses data RPP.</p>
-                        <p class="text-sm">Mohon pastikan koneksi internet Anda lancar dan coba lagi.</p>
-                    </div>
-                `;
+                console.error("Detail Error:", error);
+                alert("Terjadi kesalahan saat menghubungkan ke AI. Mohon pastikan koneksi internet Anda aktif dan coba kembali.");
             } finally {
-                btnGenerate.disabled = false;
-                btnGenerate.classList.remove('opacity-50');
-                loadingState.classList.add('hidden');
+                btnSubmit.disabled = false;
+                btnSubmit.classList.remove('opacity-75');
+                btnText.innerText = 'Buat RPP Sekarang';
             }
-        }
+        });
 
-        // Render HTML RPP secara Lengkap & Presisi untuk Layar dan Ekspor Word
-        function renderRPPContent(data) {
-            const {
-                jenjang, fase, kelas, namaPenyusun, sekolah, mapel, semester, tahunPelajaran, alokasiWaktu,
-                materi, tujuan, profilList, mitra, digital, nipGuru, namaKepala, nipKepala, tempatTanggal,
-                aiData
-            } = data;
-
-            const html = `
-                <div class="doc-title">RENCANA PELAKSANAAN PEMBELAJARAN (RPP)</div>
+        function renderRPP(data, kontenInti) {
+            const previewArea = document.getElementById('previewArea');
+            let rppHTML = `
+                <h1>RENCANA PELAKSANAAN PEMBELAJARAN (RPP)</h1>
                 
-                <!-- 1. INFORMASI UMUM -->
-                <div class="doc-subtitle">I. INFORMASI UMUM</div>
-                <table class="info-table" style="width: 100%; border-collapse: collapse; margin-bottom: 15px; font-size: 12pt; border: none;">
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Nama Penyusun</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${namaPenyusun}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Satuan Pendidikan</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${sekolah}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Fase / Kelas</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${fase} / ${kelas}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Mata Pelajaran</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${mapel}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Materi Pelajaran</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${materi}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Semester</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${semester}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Tahun Pelajaran</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${tahunPelajaran}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Alokasi Waktu</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${alokasiWaktu}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Dimensi Profil Lulusan</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${profilList.join(', ')}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Mitra Pembelajaran</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${mitra}</td></tr>
-                    <tr style="border: none;"><td style="width: 32%; padding: 2px 0; border: none; vertical-align: top;">Pemanfaatan Digital</td><td style="width: 3%; padding: 2px 0; border: none; vertical-align: top; text-align: center;">:</td><td style="width: 65%; padding: 2px 0; border: none; vertical-align: top;">${digital}</td></tr>
+                <h2>I. INFORMASI UMUM</h2>
+                <table class="info-table">
+                    <tr><td class="col-label">Nama Penyusun</td><td class="col-colon">:</td><td class="col-content">${data.namaPenyusun}</td></tr>
+                    <tr><td class="col-label">Satuan Pendidikan</td><td class="col-colon">:</td><td class="col-content">${data.sekolah}</td></tr>
+                    <tr><td class="col-label">Fase / Kelas</td><td class="col-colon">:</td><td class="col-content">${data.faseKelas}</td></tr>
+                    <tr><td class="col-label">Mata Pelajaran</td><td class="col-colon">:</td><td class="col-content">${data.mapel}</td></tr>
+                    <tr><td class="col-label">Materi Pelajaran</td><td class="col-colon">:</td><td class="col-content">${data.materi}</td></tr>
+                    <tr><td class="col-label">Semester</td><td class="col-colon">:</td><td class="col-content">${data.semester}</td></tr>
+                    <tr><td class="col-label">Tahun Pelajaran</td><td class="col-colon">:</td><td class="col-content">${data.tahunPelajaran}</td></tr>
+                    <tr><td class="col-label">Alokasi Waktu</td><td class="col-colon">:</td><td class="col-content">${data.alokasi}</td></tr>
+                    <tr><td class="col-label">Dimensi Profil Lulusan</td><td class="col-colon">:</td><td class="col-content">${data.profil}</td></tr>
+                    <tr><td class="col-label">Mitra Pembelajaran</td><td class="col-colon">:</td><td class="col-content">${data.mitra}</td></tr>
+                    <tr><td class="col-label">Pemanfaatan Digital</td><td class="col-colon">:</td><td class="col-content">${data.digital}</td></tr>
                 </table>
 
-                <!-- 2. KOMPONEN INTI -->
-                <div class="doc-subtitle">II. KOMPONEN INTI</div>
-                <p style="margin-bottom: 6px;"><strong>A. Tujuan Pembelajaran:</strong></p>
-                <p style="margin-left: 15px; margin-bottom: 10px; text-align: justify;">${tujuan}</p>
-
-                <p style="margin-bottom: 6px;"><strong>B. Pemahaman Bermakna (Deep Learning):</strong></p>
-                <p style="margin-left: 15px; margin-bottom: 10px; text-align: justify;">${aiData.pemahamanBermakna}</p>
-
-                <p style="margin-bottom: 6px;"><strong>C. Pertanyaan Pemantik:</strong></p>
-                <ol style="margin-left: 25px; margin-bottom: 12px;">
-                    ${aiData.pertanyaanPemantik.map(p => `<li style="margin-bottom: 4px;">${p}</li>`).join('')}
-                </ol>
-
-                <p style="margin-bottom: 6px;"><strong>D. Langkah-Langkah Pembelajaran (Pendekatan Deep Learning):</strong></p>
+                <h2>II. KOMPONEN INTI</h2>
+                <p><strong>A. Tujuan Pembelajaran:</strong></p>
+                <p style="margin-bottom:15px; margin-left:15px;">${data.tujuan}</p>
                 
-                <table class="doc-table">
-                    <thead>
-                        <tr>
-                            <th width="25%">Tahapan</th>
-                            <th width="75%">Kegiatan Pembelajaran (Mindful, Meaningful, Joyful)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td><strong>Pendahuluan</strong><br><em>(Mindful Learning)</em></td>
-                            <td>
-                                <ul>
-                                    ${aiData.langkahPembelajaran.pendahuluan.map(item => `<li style="margin-bottom: 4px;">${item}</li>`).join('')}
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Kegiatan Inti</strong><br><em>(Meaningful & Joyful Learning)</em></td>
-                            <td>
-                                <ul>
-                                    ${aiData.langkahPembelajaran.kegiatanInti.map(item => `<li style="margin-bottom: 6px;">${item}</li>`).join('')}
-                                </ul>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td><strong>Penutup</strong><br><em>(Refleksi & Umpan Balik)</em></td>
-                            <td>
-                                <ul>
-                                    ${aiData.langkahPembelajaran.penutup.map(item => `<li style="margin-bottom: 4px;">${item}</li>`).join('')}
-                                </ul>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                ${kontenInti}
 
-                <!-- 3. RUBRIK PENILAIAN -->
-                <div class="doc-subtitle">III. ASESMEN & RUBRIK PENILAIAN</div>
-                <table class="doc-table">
-                    <thead>
-                        <tr>
-                            <th width="25%">Aspek Evaluasi</th>
-                            <th width="25%">Perlu Bimbingan</th>
-                            <th width="25%">Baik</th>
-                            <th width="25%">Sangat Baik</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        ${aiData.rubrikPenilaian.map(rub => `
-                            <tr>
-                                <td><strong>${rub.aspek}</strong></td>
-                                <td>${rub.kriteriaPerluBimbingan}</td>
-                                <td>${rub.kriteriaBaik}</td>
-                                <td>${rub.kriteriaSangatBaik}</td>
-                            </tr>
-                        `).join('')}
-                    </tbody>
-                </table>
-
-                <!-- 4. LEMBAR KERJA PESERTA DIDIK (LKPD) -->
-                <div style="page-break-before: always;"></div>
-                <div class="doc-subtitle">IV. LEMBAR KERJA PESERTA DIDIK (LKPD)</div>
-                <div style="border: 1px solid #1e3a8a; padding: 12px; border-radius: 4px; margin-top: 10px;">
-                    <p style="text-align: center; font-weight: bold; font-size: 13pt; margin-bottom: 8px; color: #1e3a8a;">
-                        ${aiData.lkpd.judul}
-                    </p>
-                    <p style="margin-bottom: 4px;"><strong>Petunjuk Kerja:</strong> ${aiData.lkpd.instruksi}</p>
-                    <p style="margin-bottom: 6px;"><strong>Tugas / Pertanyaan Praktis:</strong></p>
-                    <ol style="margin-left: 20px;">
-                        ${aiData.lkpd.tugas.map(t => `<li style="margin-bottom: 8px; text-align: justify;">${t}</li>`).join('')}
-                    </ol>
-                </div>
-
-                <!-- DATA PENGESAHAN -->
                 <br><br>
-                <table style="width: 100%; border: none; font-size: 12pt;">
+                <table style="width: 100%; text-align: center; margin-top: 40px; border: none;">
                     <tr>
-                        <td style="width: 50%; text-align: center; border: none;">
-                            Mengetahui,<br>
-                            Kepala Sekolah<br><br><br><br><br>
-                            <strong><u>${namaKepala}</u></strong><br>
-                            NIP. ${nipKepala}
-                        </td>
-                        <td style="width: 50%; text-align: center; border: none;">
-                            ${tempatTanggal}<br>
-                            Guru Mata Pelajaran / Guru Kelas<br><br><br><br><br>
-                            <strong><u>${namaPenyusun}</u></strong><br>
-                            NIP. ${nipGuru}
-                        </td>
+                        <td style="width: 50%; padding-bottom: 80px;">Mengetahui,<br>Kepala Sekolah</td>
+                        <td style="width: 50%; padding-bottom: 80px;">${data.tempat}, ${data.tanggal}<br>Guru Kelas</td>
+                    </tr>
+                    <tr>
+                        <td style="width: 50%;"><strong>_______________________</strong></td>
+                        <td style="width: 50%;"><strong>${data.namaPenyusun}</strong></td>
                     </tr>
                 </table>
             `;
-
-            document.getElementById('a4Content').innerHTML = html;
+            previewArea.innerHTML = rppHTML;
         }
 
-        // Fungsi Ekspor ke File Word (.docx) dengan Tampilan 100% Identik
         function downloadWord() {
-            const content = document.getElementById('a4Content').innerHTML;
-
-            // Template Komplit dengan format MS Word
-            const htmlDocument = `
-                <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
-                <head>
-                    <meta charset="utf-8">
-                    <title>RPP Modul Ajar Deep Learning</title>
-                    <!--[if gte mso 9]>
-                    <xml>
-                        <w:WordDocument>
-                            <w:View>Print</w:View>
-                            <w:Zoom>100</w:Zoom>
-                            <w:DoNotOptimizeForCustomXSL/>
-                        </w:WordDocument>
-                    </xml>
-                    <![endif]-->
-                    <style>
-                        body {
-                            font-family: 'Times New Roman', Times, serif;
-                            font-size: 12pt;
-                            color: #000000;
-                            line-height: 1.15;
-                        }
-
-                        /* HANYA RESET SPASI UNTUK TABEL INFORMASI UMUM AGAR RAPAT */
-                        .info-table td, .info-table p, .info-table span {
-                            margin: 0 !important;
-                            padding: 1px 0 !important;
-                            mso-margin-top-alt: 0in !important;
-                            mso-margin-bottom-alt: 0pt !important;
-                            mso-space-after: 0pt !important;
-                            mso-space-before: 0pt !important;
-                        }
-
-                        /* Kembalikan margin proporsional untuk Judul dan Subjudul */
-                        .doc-title {
-                            font-size: 16pt;
-                            font-weight: bold;
-                            color: #1e3a8a;
-                            text-align: center;
-                            text-transform: uppercase;
-                            margin-bottom: 18px !important;
-                            border-bottom: 2px solid #1e3a8a;
-                            padding-bottom: 4px;
-                        }
-                        .doc-subtitle {
-                            font-size: 13pt;
-                            font-weight: bold;
-                            color: #1d4ed8;
-                            margin-top: 18px !important;
-                            margin-bottom: 12px !important;
-                            border-left: 4px solid #1d4ed8;
-                            padding-left: 8px;
-                            background-color: #eff6ff;
-                            padding-top: 2px;
-                            padding-bottom: 2px;
-                        }
-                        
-                        /* Tabel Komponen (Langkah Pembelajaran & Rubrik) tetap memiliki padding normal */
-                        .doc-table {
-                            width: 100%;
-                            border-collapse: collapse;
-                            margin-bottom: 12px !important;
-                            font-size: 12pt;
-                        }
-                        .doc-table th, .doc-table td {
-                            border: 1px solid #64748b;
-                            padding: 6px 8px !important;
-                            text-align: left;
-                            vertical-align: top;
-                        }
-                        .doc-table th {
-                            background-color: #f1f5f9;
-                            font-weight: bold;
-                            color: #0f172a;
-                        }
-                        
-                        ul, ol {
-                            margin-top: 0 !important;
-                            margin-bottom: 0 !important;
-                            padding-left: 20px;
-                        }
-                    </style>
-                </head>
-                <body>
-                    ${content}
-                </body>
-                </html>
+            const content = document.getElementById('previewArea').innerHTML;
+            const header = `
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='[http://www.w3.org/TR/REC-html40](http://www.w3.org/TR/REC-html40)'>
+                <head><meta charset='utf-8'><title>Export HTML To Doc</title>
+                <style>
+                    body { font-family: 'Times New Roman', serif; font-size: 12pt; }
+                    h1 { text-align: center; font-size: 14pt; font-weight: bold; border-bottom: 2px solid black; padding-bottom: 10px; }
+                    h2 { font-size: 12pt; font-weight: bold; color: #1e3a8a; }
+                    .info-table { width: 100%; border-collapse: collapse; }
+                    .info-table td { padding: 0; margin: 0; mso-space-after: 0pt !important; mso-margin-bottom-alt: 0pt !important; line-height: 1; vertical-align: top; }
+                </style>
+                </head><body>
             `;
+            const footer = "</body></html>";
+            const sourceHTML = header + content + footer;
 
-            // Konversi HTML ke Dokumen Word Blob yang lebih stabil
-            const blob = new Blob(['\ufeff', htmlDocument], {
-                type: 'application/msword'
-            });
+            const blob = new Blob(['\ufeff', sourceHTML], { type: 'application/msword' });
             const url = URL.createObjectURL(blob);
-            
-            // Trigger Download
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = "RPP_Deep_Learning_Wiryo.doc";
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'RPP_Kurikulum_Merdeka.doc';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
