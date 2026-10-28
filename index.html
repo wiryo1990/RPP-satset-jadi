@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPP SATSET JADI - Pembuat RPP Kurikulum Merdeka</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="[https://cdn.tailwindcss.com](https://cdn.tailwindcss.com)"></script>
     <style>
         body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f3f4f6; }
         .rpp-preview { font-family: 'Times New Roman', Times, serif; font-size: 12pt; color: black; line-height: 1.5; background: white; padding: 40px; box-shadow: 0 4px 6px rgba(0,0,0,0.1); width: 100%; max-width: 210mm; min-height: 297mm; margin: 0 auto; }
@@ -135,7 +135,7 @@
             btnSubmit.classList.add('opacity-75');
             btnText.innerHTML = '<span class="loader"></span> Memproses RPP dengan AI...';
             
-            // Pengambilan data dengan Fallback jika form tidak diisi
+            // Mengambil data form dengan fallback jika inputan kosong
             const dataForm = {
                 namaPenyusun: document.getElementById('namaPenyusun').value.trim() || "Wiryo, S.Pd",
                 sekolah: document.getElementById('sekolah').value.trim() || "SD Negeri Teluk Santong",
@@ -157,9 +157,9 @@
             const userPrompt = `Buatkan konten Komponen Inti RPP untuk Mata Pelajaran: ${dataForm.mapel}, Materi: ${dataForm.materi}, Tujuan: ${dataForm.tujuan}, Alokasi Waktu: ${dataForm.alokasi}. Tulis secara rinci dan terstruktur.`;
 
             try {
-                // API Key Bapak terpasang langsung dengan endpoint model stabil (gemini-1.5-flash)
+                // Endpoint resmi Gemini 1.5 Flash
                 const apiKey = "AQ.Ab8RN6LWI_ujD243IlvQVa47evbDC8WNb5cWu3hDJDkJkyxW7axRw";
-                const apiUrl = "[https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=](https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=)" + apiKey;
+                const apiUrl = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=" + apiKey;
 
                 const payload = {
                     contents: [{ parts: [{ text: userPrompt }] }],
@@ -185,7 +185,7 @@
 
             } catch (error) {
                 console.error("Detail Error:", error);
-                alert("Terjadi kesalahan saat menghubungkan ke AI. Mohon pastikan koneksi internet Anda aktif dan coba kembali.");
+                alert("Terjadi kesalahan koneksi ke AI: " + error.message);
             } finally {
                 btnSubmit.disabled = false;
                 btnSubmit.classList.remove('opacity-75');
@@ -237,7 +237,7 @@
         function downloadWord() {
             const content = document.getElementById('previewArea').innerHTML;
             const header = `
-                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='[http://www.w3.org/TR/REC-html40](http://www.w3.org/TR/REC-html40)'>
+                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
                 <head><meta charset='utf-8'><title>Export HTML To Doc</title>
                 <style>
                     body { font-family: 'Times New Roman', serif; font-size: 12pt; }
